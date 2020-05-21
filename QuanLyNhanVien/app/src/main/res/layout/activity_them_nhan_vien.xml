@@ -56,7 +56,7 @@
         app:layout_constraintTop_toBottomOf="@+id/edtPhone" />
 
     <Button
-        android:id="@+id/btnAdd"
+        android:id="@+id/btnEdit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="76dp"
@@ -74,7 +74,7 @@
         android:layout_marginLeft="56dp"
         android:layout_marginTop="16dp"
         android:text="Hủy"
-        app:layout_constraintStart_toEndOf="@+id/btnAdd"
+        app:layout_constraintStart_toEndOf="@+id/btnEdit"
         app:layout_constraintTop_toBottomOf="@+id/imgView" />
 
     <ImageButton

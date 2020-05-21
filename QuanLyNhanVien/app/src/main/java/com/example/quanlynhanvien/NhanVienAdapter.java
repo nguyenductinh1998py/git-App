@@ -15,11 +15,11 @@ import android.widget.Toast;
 import java.util.List;
 
 public class NhanVienAdapter extends BaseAdapter {
-    private Context context;
+    private MainActivity context;
     private  int layout;
     private List<NhanVien> nhanVienList;
 
-    public NhanVienAdapter(Context context, int layout, List<NhanVien> nhanVienList) {
+    public NhanVienAdapter(MainActivity context, int layout, List<NhanVien> nhanVienList) {
         this.context = context;
         this.layout = layout;
         this.nhanVienList = nhanVienList;
@@ -66,18 +66,18 @@ public class NhanVienAdapter extends BaseAdapter {
         holder.txtPosition.setText(nhanVien.getChucVu());
         holder.txtPhone.setText("(84)" + nhanVien.getSdt() + "");
         byte[] hinhAnh = nhanVien.getHinh();
-        Bitmap bitmap = BitmapFactory.decodeByteArray(hinhAnh, 0, hinhAnh.length);
+        final Bitmap bitmap = BitmapFactory.decodeByteArray(hinhAnh, 0, hinhAnh.length);
         holder.imgPicture.setImageBitmap(bitmap);
         holder.imgEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Chỉnh sửa", Toast.LENGTH_SHORT).show();
+                context.DialoEdit(nhanVien.getTen(), nhanVien.getSdt(), nhanVien.getChucVu(), nhanVien.getId(), nhanVien.getHinh());
             }
         });
         holder.imgDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Xóa" + nhanVien.getTen(), Toast.LENGTH_SHORT).show();
+                context.DialogXoaNV(nhanVien.getTen(), nhanVien.getSdt(), nhanVien.getId());
             }
         });
         return convertView;

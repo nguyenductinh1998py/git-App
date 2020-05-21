@@ -10,7 +10,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,7 +20,6 @@ import android.widget.Toast;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.BitSet;
 
 public class ThemNhanVienActivity extends AppCompatActivity {
     Button btnAdd, btnCancel;
@@ -70,12 +68,7 @@ public class ThemNhanVienActivity extends AppCompatActivity {
                 startActivityForResult(intent, REQUEST_CODE_CAMERA);
             }
         });
-        imgBtnFolder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-            }
-        });
         imgBtnFolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,10 +90,16 @@ public class ThemNhanVienActivity extends AppCompatActivity {
                 startActivity(new Intent(ThemNhanVienActivity.this, MainActivity.class));
             }
         });
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ThemNhanVienActivity.this, MainActivity.class));
+            }
+        });
     }
 
     private void init() {
-        btnAdd          = (Button) findViewById(R.id.btnAdd);
+        btnAdd          = (Button) findViewById(R.id.btnEdit);
         btnCancel       = (Button) findViewById(R.id.btnCancel);
         imgView         = (ImageView) findViewById(R.id.imgView);
         imgBtnCamera    = (ImageButton) findViewById(R.id.imgBtnCamera);
