@@ -27,6 +27,18 @@ public class Database extends SQLiteOpenHelper {
         statement.bindLong(4, sdt);
         statement.executeInsert();
     }
+    public void UPDATE_NHANVIEN(String ten, String chucVu, byte[] hinh, int sdt, int id){
+        SQLiteDatabase database = getWritableDatabase();
+        String sql = "UPDATE NhanVien SET TenNhanVien = ?, ChucVu = ?, HinhAnh = ?, Phone = ? WHERE Id = ?";
+        SQLiteStatement statement = database.compileStatement(sql);
+        statement.clearBindings();
+        statement.bindString(1, ten);
+        statement.bindString(2, chucVu);
+        statement.bindBlob(3, hinh);
+        statement.bindLong(4, sdt);
+        statement.bindLong(5, id);
+        statement.executeInsert();
+    }
 
     public Cursor GetData(String sql){
         SQLiteDatabase database = getReadableDatabase();

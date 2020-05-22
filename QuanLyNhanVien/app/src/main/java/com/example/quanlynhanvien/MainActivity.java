@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
     }
     private void LoadData(){
         Cursor cursor = database.GetData("SELECT * FROM NhanVien");
+        nhanVienArrayList.clear();
         while (cursor.moveToNext()){
             nhanVienArrayList.add(new NhanVien(cursor.getInt(0),
                     cursor.getString(1),
@@ -95,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                 database.QueryData("DELETE FROM NhanVien WHERE Id = '" + id +"'");
                 Toast.makeText(MainActivity.this, "Đã xóa", Toast.LENGTH_SHORT).show();
                 LoadData();
-                startActivity(new Intent(MainActivity.this, ThemNhanVienActivity.class));
+
 
             }
         });
@@ -141,16 +142,15 @@ public class MainActivity extends AppCompatActivity {
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                database.QueryData("DELETE FROM NhanVien WHERE Id = '" + id +"'");
                 BitmapDrawable bitmapDrawable = (BitmapDrawable) imgView.getDrawable();
                 Bitmap bitmap = bitmapDrawable.getBitmap();
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
                 byte[] hinhAnh = byteArrayOutputStream.toByteArray();
-                MainActivity.database.INSERT_NHANVIEN(edtName.getText().toString().trim(), edtPosition.getText().toString().trim(), hinhAnh, Integer.parseInt(edtPhone.getText().toString().trim()));
+                MainActivity.database.UPDATE_NHANVIEN(edtName.getText().toString().trim(), edtPosition.getText().toString().trim(), hinhAnh, Integer.parseInt(edtPhone.getText().toString().trim()), id);
                 Toast.makeText(MainActivity.this, "Đã Sửa", Toast.LENGTH_SHORT).show();
                 LoadData();
-                startActivity(new Intent(MainActivity.this, ThemNhanVienActivity.class));
+
 
             }
         });
