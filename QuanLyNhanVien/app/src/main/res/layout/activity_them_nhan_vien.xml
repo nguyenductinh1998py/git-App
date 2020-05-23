@@ -56,6 +56,8 @@
         app:layout_constraintTop_toBottomOf="@+id/edtPhone" />
 
     <Button
+        android:textColor="#FDFDF6"
+        android:background="@drawable/custom_button"
         android:id="@+id/btnEdit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -67,6 +69,8 @@
         app:layout_constraintTop_toBottomOf="@+id/imgView" />
 
     <Button
+        android:textColor="#FDFDF6"
+        android:background="@drawable/custom_button"
         android:id="@+id/btnCancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

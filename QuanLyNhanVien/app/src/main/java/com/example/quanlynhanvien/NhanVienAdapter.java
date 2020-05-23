@@ -77,7 +77,8 @@ public class NhanVienAdapter extends BaseAdapter {
         holder.imgDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                context.DialogXoaNV(nhanVien.getTen(), nhanVien.getSdt(), nhanVien.getId());
+                context.DialogXoaNV(nhanVien.getTen(), nhanVien.getSdt(), nhanVien.getId()
+                );
             }
         });
         return convertView;
