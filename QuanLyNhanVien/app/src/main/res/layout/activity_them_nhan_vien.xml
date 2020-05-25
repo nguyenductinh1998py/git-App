@@ -7,6 +7,7 @@
     tools:context=".ThemNhanVienActivity">
 
     <TextView
+
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,6 +23,10 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
+        android:drawableLeft="@drawable/name"
+        android:background="@drawable/custom_edit_text"
+        android:textColor="#0073FF"
+        android:textColorHint="#78CD4B"
         android:id="@+id/editName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -39,6 +44,10 @@
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <EditText
+        android:drawableLeft="@drawable/office"
+        android:background="@drawable/custom_edit_text"
+        android:textColor="#0073FF"
+        android:textColorHint="#78CD4B"
         android:id="@+id/edtPosition"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -56,8 +65,9 @@
         app:layout_constraintTop_toBottomOf="@+id/edtPhone" />
 
     <Button
-        android:textColor="#FDFDF6"
-        android:background="@drawable/custom_button"
+        android:drawableLeft="@drawable/except"
+        android:textColor="#3F51B5"
+        android:background="@drawable/custom_edit_text"
         android:id="@+id/btnEdit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -69,8 +79,9 @@
         app:layout_constraintTop_toBottomOf="@+id/imgView" />
 
     <Button
-        android:textColor="#FDFDF6"
-        android:background="@drawable/custom_button"
+        android:drawableLeft="@drawable/cancel"
+        android:textColor="#3F51B5"
+        android:background="@drawable/custom_edit_text"
         android:id="@+id/btnCancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -119,6 +130,11 @@
         app:srcCompat="@mipmap/nofindimage" />
 
     <EditText
+        android:drawableLeft="@drawable/phonenumber"
+
+        android:background="@drawable/custom_edit_text"
+        android:textColor="#0073FF"
+        android:textColorHint="#78CD4B"
         android:id="@+id/edtPhone"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
