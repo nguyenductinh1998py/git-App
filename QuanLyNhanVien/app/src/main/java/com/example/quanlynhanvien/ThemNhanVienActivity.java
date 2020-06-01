@@ -25,7 +25,7 @@ public class ThemNhanVienActivity extends AppCompatActivity {
     Button btnAdd, btnCancel;
     ImageView imgView;
     ImageButton imgBtnCamera, imgBtnFolder;
-    EditText edtName,edtPhone , edtPosition;
+    EditText edtName,edtPhone , edtPosition, edtMoTa;
 
     int REQUEST_CODE_CAMERA = 111;
     int REQUEST_CODE_FOLDER = 222;
@@ -85,7 +85,7 @@ public class ThemNhanVienActivity extends AppCompatActivity {
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
                 byte[] hinhAnh = byteArrayOutputStream.toByteArray();
-                MainActivity.database.INSERT_NHANVIEN(edtName.getText().toString().trim(), edtPosition.getText().toString().trim(), hinhAnh, Integer.parseInt(edtPhone.getText().toString().trim()));
+                MainActivity.database.INSERT_NHANVIEN(edtName.getText().toString().trim(), edtPosition.getText().toString().trim(), hinhAnh, Integer.parseInt(edtPhone.getText().toString().trim()), edtMoTa.getText().toString().trim());
                 Toast.makeText(ThemNhanVienActivity.this, "Đã Thêm", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(ThemNhanVienActivity.this, MainActivity.class));
             }
@@ -106,6 +106,7 @@ public class ThemNhanVienActivity extends AppCompatActivity {
         imgBtnFolder    = (ImageButton) findViewById(R.id.imgBtnFolder);
         edtName         = (EditText) findViewById(R.id.editName);
         edtPosition     = (EditText) findViewById(R.id.edtPosition);
-        edtPhone     = (EditText) findViewById(R.id.edtPhone);
+        edtPhone        = (EditText) findViewById(R.id.edtPhone);
+        edtMoTa         = (EditText) findViewById(R.id.edtMoTa);
     }
 }

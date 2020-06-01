@@ -5,6 +5,15 @@ public class NhanVien {
     private String Ten;
     private String ChucVu;
     private int Sdt;
+    private String Mota;
+
+    public String getMota() {
+        return Mota;
+    }
+
+    public void setMota(String mota) {
+        Mota = mota;
+    }
 
     public int getSdt() {
         return Sdt;
@@ -48,11 +57,12 @@ public class NhanVien {
 
     private byte[] Hinh;
 
-    public NhanVien(int id, String ten, String chucVu, byte[] hinh, int sdt) {
+    public NhanVien(int id, String ten, String chucVu, byte[] hinh, int sdt, String mota) {
         Id = id;
         Ten = ten;
         ChucVu = chucVu;
         Sdt = sdt;
         Hinh = hinh;
+        Mota = mota;
     }
 }

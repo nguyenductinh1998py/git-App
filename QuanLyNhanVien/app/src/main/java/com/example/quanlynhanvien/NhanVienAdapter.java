@@ -40,7 +40,7 @@ public class NhanVienAdapter extends BaseAdapter {
         return 0;
     }
     private  class  ViewHolder{
-        TextView txtName, txtPhone, txtPosition;
+        TextView txtName, txtPhone, txtPosition, txtMoTa;
         ImageView imgPicture, imgDelete, imgEdit;
     }
     @Override
@@ -56,6 +56,7 @@ public class NhanVienAdapter extends BaseAdapter {
             holder.imgPicture   = (ImageView) convertView.findViewById(R.id.imgView);
             holder.imgDelete    =(ImageView) convertView.findViewById(R.id.imgDelete);
             holder.imgEdit      = (ImageView) convertView.findViewById(R.id.imgEdit);
+            holder.txtMoTa      = (TextView) convertView.findViewById(R.id.txtMoTa);
             convertView.setTag(holder);
         }
         else {
@@ -65,13 +66,14 @@ public class NhanVienAdapter extends BaseAdapter {
         holder.txtName.setText(nhanVien.getTen());
         holder.txtPosition.setText(nhanVien.getChucVu());
         holder.txtPhone.setText("(84)" + nhanVien.getSdt() + "");
+        holder.txtMoTa.setText(nhanVien.getMota());
         byte[] hinhAnh = nhanVien.getHinh();
         final Bitmap bitmap = BitmapFactory.decodeByteArray(hinhAnh, 0, hinhAnh.length);
         holder.imgPicture.setImageBitmap(bitmap);
         holder.imgEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                context.DialoEdit(nhanVien.getTen(), nhanVien.getSdt(), nhanVien.getChucVu(), nhanVien.getId(), nhanVien.getHinh());
+                context.DialoEdit(nhanVien.getTen(), nhanVien.getSdt(), nhanVien.getChucVu(), nhanVien.getId(), nhanVien.getHinh(), nhanVien.getMota());
             }
         });
         holder.imgDelete.setOnClickListener(new View.OnClickListener() {

@@ -16,27 +16,29 @@ public class Database extends SQLiteOpenHelper {
         SQLiteDatabase database = getWritableDatabase();
         database.execSQL(sql);
     }
-    public void INSERT_NHANVIEN(String ten, String chucVu, byte[] hinh, int sdt){
+    public void INSERT_NHANVIEN(String ten, String chucVu, byte[] hinh, int sdt, String moTa){
         SQLiteDatabase database = getWritableDatabase();
-        String sql = "INSERT INTO NhanVien VALUES(null, ?, ?, ?, ?)";
+        String sql = "INSERT INTO NhanVien VALUES(null, ?, ?, ?, ?, ?)";
         SQLiteStatement statement = database.compileStatement(sql);
         statement.clearBindings();
         statement.bindString(1, ten);
         statement.bindString(2, chucVu);
         statement.bindBlob(3, hinh);
         statement.bindLong(4, sdt);
+        statement.bindString(5, moTa);
         statement.executeInsert();
     }
-    public void UPDATE_NHANVIEN(String ten, String chucVu, byte[] hinh, int sdt, int id){
+    public void UPDATE_NHANVIEN(String ten, String chucVu, byte[] hinh, int sdt, int id, String moTa){
         SQLiteDatabase database = getWritableDatabase();
-        String sql = "UPDATE NhanVien SET TenNhanVien = ?, ChucVu = ?, HinhAnh = ?, Phone = ? WHERE Id = ?";
+        String sql = "UPDATE NhanVien SET TenNhanVien = ?, ChucVu = ?, HinhAnh = ?, Phone = ?, MoTa = ? WHERE Id = ?";
         SQLiteStatement statement = database.compileStatement(sql);
         statement.clearBindings();
         statement.bindString(1, ten);
         statement.bindString(2, chucVu);
         statement.bindBlob(3, hinh);
         statement.bindLong(4, sdt);
-        statement.bindLong(5, id);
+        statement.bindString(5, moTa);
+        statement.bindLong(6, id);
         statement.executeInsert();
     }
 

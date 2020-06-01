@@ -53,8 +53,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         database = new Database(this, "QuanLyNhanVien.sqlite", null, 1);
-
-        database.QueryData("CREATE TABLE IF NOT EXISTS NhanVien(Id INTEGER PRIMARY KEY AUTOINCREMENT, TenNhanVien VARCHAR(150), ChucVu VARCHAR(50), HinhAnh BLOB, Phone INTEGER)");
+        //database.QueryData("DROP TABLE NhanVien");
+        database.QueryData("CREATE TABLE IF NOT EXISTS NhanVien(Id INTEGER PRIMARY KEY AUTOINCREMENT, TenNhanVien VARCHAR(150), ChucVu VARCHAR(50), HinhAnh BLOB, Phone INTEGER, MoTa VARCHAR(1000))");
+        //database.QueryData("CREATE TABLE IF NOT EXISTS NhanVien(Id INTEGER PRIMARY KEY AUTOINCREMENT, TenNhanVien VARCHAR(150), ChucVu VARCHAR(50), HinhAnh BLOB, Phone INTEGER)");
         LoadData();
         if (nhanVienArrayList.size() >= 1){
             btnThem.setVisibility(View.INVISIBLE);
@@ -81,7 +82,8 @@ public class MainActivity extends AppCompatActivity {
                     cursor.getString(1),
                     cursor.getString(2),
                     cursor.getBlob(3),
-                    cursor.getInt(4)));
+                    cursor.getInt(4),
+                    cursor.getString(5)));
 
 
         }
@@ -108,22 +110,23 @@ public class MainActivity extends AppCompatActivity {
         });
         builder.show();
     }
-    public void DialoEdit(String ten, int sdt, String chucVu, final int id, byte[] hinh){
+    public void DialoEdit(String ten, int sdt, String chucVu, final int id, byte[] hinh, String moTa){
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_edit);
         Button btnEdit              = (Button) dialog.findViewById(R.id.btnEdit);
         Button btnCancel            = (Button) dialog.findViewById(R.id.btnCancel);
-        imgView           = (ImageView) dialog.findViewById(R.id.imgView);
+        imgView                     = (ImageView) dialog.findViewById(R.id.imgView);
         ImageButton imgBtnCamera    = (ImageButton) dialog.findViewById(R.id.imgBtnCamera);
         ImageButton imgBtnFolder    = (ImageButton) dialog.findViewById(R.id.imgBtnFolder);
-        final EditText edtName            = (EditText) dialog.findViewById(R.id.editName);
-        final EditText edtPosition        = (EditText) dialog.findViewById(R.id.edtPosition);
-        final EditText edtPhone           = (EditText) dialog.findViewById(R.id.edtPhone);
-
+        final EditText edtName      = (EditText) dialog.findViewById(R.id.editName);
+        final EditText edtPosition  = (EditText) dialog.findViewById(R.id.edtPosition);
+        final EditText edtPhone     = (EditText) dialog.findViewById(R.id.edtPhone);
+        final EditText edtMota      = (EditText) dialog.findViewById(R.id.edtMoTa);
         edtName.setText(ten);
         edtPhone.setText(sdt+ "");
         edtPosition.setText(chucVu);
+        edtMota.setText(moTa);
         imgBtnCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
                 byte[] hinhAnh = byteArrayOutputStream.toByteArray();
-                MainActivity.database.UPDATE_NHANVIEN(edtName.getText().toString().trim(), edtPosition.getText().toString().trim(), hinhAnh, Integer.parseInt(edtPhone.getText().toString().trim()), id);
+                MainActivity.database.UPDATE_NHANVIEN(edtName.getText().toString().trim(), edtPosition.getText().toString().trim(), hinhAnh, Integer.parseInt(edtPhone.getText().toString().trim()), id, edtMota.getText().toString().trim());
                 Toast.makeText(MainActivity.this, "Đã Sửa", Toast.LENGTH_SHORT).show();
                 LoadData();
 
