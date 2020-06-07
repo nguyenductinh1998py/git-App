@@ -1,2 +1,2 @@
-# git-App
+# BaiTieuLuanAndroid
 Employee Management Application
