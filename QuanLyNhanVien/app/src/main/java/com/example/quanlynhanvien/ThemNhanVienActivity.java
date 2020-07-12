@@ -84,10 +84,25 @@ public class ThemNhanVienActivity extends AppCompatActivity {
                 Bitmap bitmap = bitmapDrawable.getBitmap();
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+
+
                 byte[] hinhAnh = byteArrayOutputStream.toByteArray();
-                MainActivity.database.INSERT_NHANVIEN(edtName.getText().toString().trim(), edtPosition.getText().toString().trim(), hinhAnh, Integer.parseInt(edtPhone.getText().toString().trim()), edtMoTa.getText().toString().trim());
-                Toast.makeText(ThemNhanVienActivity.this, "Đã Thêm", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(ThemNhanVienActivity.this, MainActivity.class));
+                if(edtName.getText().toString().trim().equals("")) {
+                    Toast.makeText(ThemNhanVienActivity.this, "Vui lòng không để trống tên", Toast.LENGTH_SHORT).show();
+
+                }
+                else if(edtPosition.getText().toString().trim().equals("")){
+                    Toast.makeText(ThemNhanVienActivity.this, "Vui lòng không để Chức vụ", Toast.LENGTH_SHORT).show();
+                }
+                else if(edtPhone.getText().toString().trim().equals("")){
+                    Toast.makeText(ThemNhanVienActivity.this, "Vui lòng không để trống Số điện thoại", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    MainActivity.database.INSERT_NHANVIEN(edtName.getText().toString().trim(), edtPosition.getText().toString().trim(), hinhAnh, Integer.parseInt(edtPhone.getText().toString().trim()), edtMoTa.getText().toString().trim());
+                    Toast.makeText(ThemNhanVienActivity.this, "Đã Thêm", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(ThemNhanVienActivity.this, MainActivity.class));
+                }
+
             }
         });
         btnCancel.setOnClickListener(new View.OnClickListener() {

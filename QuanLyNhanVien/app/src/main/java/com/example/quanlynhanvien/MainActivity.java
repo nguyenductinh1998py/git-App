@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -40,16 +41,17 @@ public class MainActivity extends AppCompatActivity {
     public static Database database;
     int REQUEST_CODE_CAMERA = 111;
     int REQUEST_CODE_FOLDER = 222;
+    TextView txtTT;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        btnThem = (Button) findViewById(R.id.btnAddEmployee);
-        listView = (ListView) findViewById(R.id.ListView);
+        btnThem     = (Button) findViewById(R.id.btnAddEmployee);
+        listView    = (ListView) findViewById(R.id.ListView);
+        txtTT       = (TextView) findViewById(R.id.txtTT);
         nhanVienArrayList = new ArrayList<>();
-        adapter = new NhanVienAdapter(this, R.layout.dong_nhan_vien, nhanVienArrayList);
+        adapter     = new NhanVienAdapter(this, R.layout.dong_nhan_vien, nhanVienArrayList);
         listView.setAdapter(adapter);
-
 
 
         database = new Database(this, "QuanLyNhanVien.sqlite", null, 1);
@@ -88,6 +90,27 @@ public class MainActivity extends AppCompatActivity {
 
         }
         adapter.notifyDataSetChanged();
+        Cursor cursor1 = database.GetData("SELECT COUNT (*) FROM NhanVien");
+        cursor1.moveToFirst();
+        txtTT.setText(cursor1.getInt(0)+"");
+    }
+    private void LoadDataT(String sql){
+        Cursor cursor = database.GetData("SELECT * FROM NhanVien WHERE TenNhanVien LIKE '%" +sql+"%'");
+        nhanVienArrayList.clear();
+        while (cursor.moveToNext()){
+            nhanVienArrayList.add(new NhanVien(cursor.getInt(0),
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getBlob(3),
+                    cursor.getInt(4),
+                    cursor.getString(5)));
+
+
+        }
+        adapter.notifyDataSetChanged();
+        Cursor cursor1 = database.GetData("SELECT COUNT (*) FROM NhanVien WHERE TenNhanVien LIKE '%" +sql+"%'");
+        cursor1.moveToFirst();
+        txtTT.setText(cursor1.getInt(0)+"");
     }
     public void DialogXoaNV(String tenNV, int sdt, final int id){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -98,8 +121,6 @@ public class MainActivity extends AppCompatActivity {
                 database.QueryData("DELETE FROM NhanVien WHERE Id = '" + id +"'");
                 Toast.makeText(MainActivity.this, "Đã xóa", Toast.LENGTH_SHORT).show();
                 LoadData();
-
-
             }
         });
         builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
@@ -109,6 +130,35 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         builder.show();
+    }
+    public void DialogFind(){
+        final Dialog dialog1 = new Dialog(this);
+        dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog1.setContentView(R.layout.dialog_tim);
+        Button btnFind      = (Button) dialog1.findViewById(R.id.btnFind);
+        Button btnCancelT   = (Button) dialog1.findViewById(R.id.btnCancelT);
+        final EditText edtNameT   = (EditText) dialog1.findViewById(R.id.edtNameTim);
+        btnFind.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (edtNameT.getText().toString().trim().equals("")){
+                    Toast.makeText(MainActivity.this, "Vui lòng nhập tên nhân viên.", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    LoadDataT(edtNameT.getText().toString().trim());
+                   dialog1.dismiss();
+                }
+
+            }
+        });
+        btnCancelT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog1.dismiss();
+            }
+        });
+        dialog1.show();
+
     }
     public void DialoEdit(String ten, int sdt, String chucVu, final int id, byte[] hinh, String moTa){
         final Dialog dialog = new Dialog(this);
@@ -150,9 +200,21 @@ public class MainActivity extends AppCompatActivity {
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
                 byte[] hinhAnh = byteArrayOutputStream.toByteArray();
-                MainActivity.database.UPDATE_NHANVIEN(edtName.getText().toString().trim(), edtPosition.getText().toString().trim(), hinhAnh, Integer.parseInt(edtPhone.getText().toString().trim()), id, edtMota.getText().toString().trim());
-                Toast.makeText(MainActivity.this, "Đã Sửa", Toast.LENGTH_SHORT).show();
-                LoadData();
+                if(edtName.getText().toString().trim().equals("")) {
+                    Toast.makeText(MainActivity.this, "Vui lòng không để trống tên", Toast.LENGTH_SHORT).show();
+                }
+                else if(edtPosition.getText().toString().trim().equals("")){
+                    Toast.makeText(MainActivity.this, "Vui lòng không để Chức vụ", Toast.LENGTH_SHORT).show();
+                }
+                else if(edtPhone.getText().toString().trim().equals("")){
+                    Toast.makeText(MainActivity.this, "Vui lòng không để trống Số điện thoại", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    MainActivity.database.UPDATE_NHANVIEN(edtName.getText().toString().trim(), edtPosition.getText().toString().trim(), hinhAnh, Integer.parseInt(edtPhone.getText().toString().trim()), id, edtMota.getText().toString().trim());
+                    Toast.makeText(MainActivity.this, "Đã Sửa", Toast.LENGTH_SHORT).show();
+                    LoadData();
+                }
+
 
 
             }
@@ -195,6 +257,12 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.menuAdd){
             startActivity(new Intent(MainActivity.this, ThemNhanVienActivity.class));
+        }
+        if (item.getItemId() == R.id.menuT){
+            DialogFind();
+        }
+        if (item.getItemId() == R.id.menuTrangChu){
+            LoadData();
         }
         return super.onOptionsItemSelected(item);
     }
