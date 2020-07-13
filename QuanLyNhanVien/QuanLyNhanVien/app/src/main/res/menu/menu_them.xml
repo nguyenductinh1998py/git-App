@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:title="Trang Chủ"
+        android:icon="@drawable/home"
+        app:showAsAction="always"
+        android:id="@+id/menuTrangChu"/>
+    <item android:title="Tìm"
+        app:showAsAction="always"
+        android:id="@+id/menuT"
+        android:icon="@mipmap/find"
+        />
+    <item android:title="Thêm"
+        android:icon="@mipmap/menu_add"
+        app:showAsAction="always"
+        android:id="@+id/menuAdd"/>
+
+</menu>
