@@ -11,14 +11,14 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="16dp"
         android:text="Thêm Nhân Viên"
         android:textColor="#3F51B5"
         android:textSize="24sp"
 
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.484"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -44,51 +44,51 @@
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <EditText
-        android:drawableLeft="@drawable/office"
-        android:background="@drawable/custom_edit_text"
-        android:textColor="#0073FF"
-        android:textColorHint="#78CD4B"
         android:id="@+id/edtPosition"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginLeft="32dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:layout_marginRight="32dp"
+        android:background="@drawable/custom_edit_text"
+        android:drawableLeft="@drawable/office"
         android:ems="10"
         android:hint="Nhập chức vụ"
         android:inputType="textPersonName"
+        android:textColor="#0073FF"
+        android:textColorHint="#78CD4B"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edtPhone" />
 
     <Button
-        android:drawableLeft="@drawable/except"
-        android:textColor="#3F51B5"
-        android:background="@drawable/custom_edit_text"
         android:id="@+id/btnEdit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="76dp"
-        android:layout_marginLeft="76dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginLeft="72dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/custom_edit_text"
+        android:drawableLeft="@drawable/except"
         android:text="Thêm"
+        android:textColor="#3F51B5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgView" />
 
     <Button
-        android:drawableLeft="@drawable/cancel"
-        android:textColor="#3F51B5"
-        android:background="@drawable/custom_edit_text"
         android:id="@+id/btnCancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
-        android:layout_marginLeft="56dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/custom_edit_text"
+        android:drawableLeft="@drawable/cancel"
         android:text="Hủy"
+        android:textColor="#3F51B5"
         app:layout_constraintStart_toEndOf="@+id/btnEdit"
         app:layout_constraintTop_toBottomOf="@+id/imgView" />
 
@@ -167,5 +167,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edtPosition" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#FBFBF3"
+        app:layout_constraintBottom_toTopOf="@+id/edtMoTa"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.889"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtPhone"
+        app:layout_constraintVertical_bias="0.386"
+        app:srcCompat="@drawable/list" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

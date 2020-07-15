@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     int REQUEST_CODE_CAMERA = 111;
     int REQUEST_CODE_FOLDER = 222;
     TextView txtTT;
+    int kt = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,8 +57,9 @@ public class MainActivity extends AppCompatActivity {
 
         database = new Database(this, "QuanLyNhanVien.sqlite", null, 1);
         //database.QueryData("DROP TABLE NhanVien");
-        database.QueryData("CREATE TABLE IF NOT EXISTS NhanVien(Id INTEGER PRIMARY KEY AUTOINCREMENT, TenNhanVien VARCHAR(150), ChucVu VARCHAR(50), HinhAnh BLOB, Phone INTEGER, MoTa VARCHAR(1000))");
-        //database.QueryData("CREATE TABLE IF NOT EXISTS NhanVien(Id INTEGER PRIMARY KEY AUTOINCREMENT, TenNhanVien VARCHAR(150), ChucVu VARCHAR(50), HinhAnh BLOB, Phone INTEGER)");
+        //database.QueryData("CREATE TABLE IF NOT EXISTS ChucVu(Id INTEGER PRIMARY KEY AUTOINCREMENT, TenChucVu VARCHAR(50))");
+        //database.QueryData("CREATE TABLE IF NOT EXISTS NhanVien(Id INTEGER PRIMARY KEY AUTOINCREMENT, TenNhanVien VARCHAR(150), ChucVu VARCHAR(50), HinhAnh BLOB, Phone INTEGER, MoTa VARCHAR(1000))");
+        //database.QueryData("INSERT INTO ChucVu VALUES(null, 'Lãnh Đạo')");
         LoadData();
         if (nhanVienArrayList.size() >= 1){
             btnThem.setVisibility(View.INVISIBLE);
@@ -86,8 +88,6 @@ public class MainActivity extends AppCompatActivity {
                     cursor.getBlob(3),
                     cursor.getInt(4),
                     cursor.getString(5)));
-
-
         }
         adapter.notifyDataSetChanged();
         Cursor cursor1 = database.GetData("SELECT COUNT (*) FROM NhanVien");
@@ -190,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
         edtPhone.setText(sdt+ "");
         edtPosition.setText(chucVu);
         edtMota.setText(moTa);
+
         imgBtnCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -213,6 +214,9 @@ public class MainActivity extends AppCompatActivity {
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
                 byte[] hinhAnh = byteArrayOutputStream.toByteArray();
+                Cursor cursor2 = database.GetData("SELECT COUNT(*) FROM ChucVu WHERE TenChucVu = '"+edtPosition.getText().toString().trim() +"'");
+                cursor2.moveToFirst();
+                kt = cursor2.getInt(0);
                 if(edtName.getText().toString().trim().equals("")) {
                     Toast.makeText(MainActivity.this, "Vui lòng không để trống tên", Toast.LENGTH_SHORT).show();
                 }
@@ -221,6 +225,9 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else if(edtPhone.getText().toString().trim().equals("")){
                     Toast.makeText(MainActivity.this, "Vui lòng không để trống Số điện thoại", Toast.LENGTH_SHORT).show();
+                }
+                else if(kt == 0){
+                    Toast.makeText(MainActivity.this, "Chức vụ bạn nhập không hợp lệ", Toast.LENGTH_SHORT).show();
                 }
                 else{
                     MainActivity.database.UPDATE_NHANVIEN(edtName.getText().toString().trim(), edtPosition.getText().toString().trim(), hinhAnh, Integer.parseInt(edtPhone.getText().toString().trim()), id, edtMota.getText().toString().trim());
