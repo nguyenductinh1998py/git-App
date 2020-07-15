@@ -190,9 +190,6 @@ public class ThemNhanVienActivity extends AppCompatActivity {
                 Cursor cursor2 = database.GetData("SELECT COUNT(*) FROM ChucVu WHERE TenChucVu = '"+edtPosition.getText().toString().trim() +"'");
                 cursor2.moveToFirst();
                 kt = cursor2.getInt(0);
-
-
-
                 if(edtName.getText().toString().trim().equals("")) {
                     Toast.makeText(ThemNhanVienActivity.this, "Vui lòng không để trống tên", Toast.LENGTH_SHORT).show();
 
