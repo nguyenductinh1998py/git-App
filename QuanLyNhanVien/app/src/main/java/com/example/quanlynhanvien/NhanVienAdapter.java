@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,54 @@ public class NhanVienAdapter extends BaseAdapter {
         this.layout = layout;
         this.nhanVienList = nhanVienList;
     }
+    public String getSafeSubstring(String s, int maxLength){
+        String a = s;
+        String [] works = a.split(" ");
+        if(!TextUtils.isEmpty(s)){
+            if(s.length() >= maxLength){
+                a = works[0]+ " " + works[1] + " "+ works[2] + "...";
+            }
+        }
+        return a;
+    }
+    public String getSafeSubstringCV(String s, int maxLength){
+        String a = "";
+        String [] works = s.split(" ");
+        if(!TextUtils.isEmpty(s)){
+            if(s.length() >= maxLength){
+                for (int i = 0; i < works.length; i++){
 
+                    if (i == works.length - 1){
+                        a += works[i];
+                    }
+                    else
+                        a += works[i].charAt(0)+". ";
+                }
+            }
+            else
+                return s;
+        }
+        return a;
+    }
+    public String getSafeSubstringTen(String s, int maxLength){
+        String a = "";
+        String [] works = s.split(" ");
+        if(!TextUtils.isEmpty(s)){
+            if(s.length() >= maxLength){
+                for (int i = 0; i < works.length; i++){
+
+                    if (i == works.length - 1){
+                        a += works[i];
+                    }
+                    else
+                        a += works[i].charAt(0)+". ";
+                }
+            }
+            else
+                return s;
+        }
+        return a;
+    }
     @Override
     public int getCount() {
         return nhanVienList.size();
@@ -68,10 +116,10 @@ public class NhanVienAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         final NhanVien nhanVien = nhanVienList.get(position);
-        holder.txtName.setText(nhanVien.getTen());
-        holder.txtPosition.setText(nhanVien.getChucVu());
+        holder.txtName.setText(getSafeSubstringTen(nhanVien.getTen(), 15));
+        holder.txtPosition.setText(getSafeSubstringCV(nhanVien.getChucVu(), 15));
         holder.txtPhone.setText("(84)" + nhanVien.getSdt() + "");
-        holder.txtMoTa.setText(nhanVien.getMota());
+        holder.txtMoTa.setText(getSafeSubstring(nhanVien.getMota(), 10));
         final byte[] hinhAnh = nhanVien.getHinh();
         final Bitmap bitmap = BitmapFactory.decodeByteArray(hinhAnh, 0, hinhAnh.length);
         holder.imgPicture.setImageBitmap(bitmap);
