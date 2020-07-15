@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
         else
             txtTT.setText("0");
 
+
     }
     private void LoadDataT(String sql){
         Cursor cursor = database.GetData("SELECT * FROM NhanVien WHERE TenNhanVien LIKE '%" +sql+"%'");
@@ -113,12 +114,11 @@ public class MainActivity extends AppCompatActivity {
         }
         adapter.notifyDataSetChanged();
         Cursor cursor1 = database.GetData("SELECT COUNT (*) FROM NhanVien WHERE TenNhanVien LIKE '%" +sql+"%'");
-        if(cursor1.moveToFirst()){
+        if (cursor1.moveToFirst()){
             Toast.makeText(this, "Có " + cursor1.getInt(0) + " kết quả đã tìm thấy!!!", Toast.LENGTH_SHORT).show();
             txtTT.setText(cursor1.getInt(0)+"");
         }
-        else
-        {
+        else{
             Toast.makeText(this, "Không tìm thấy!!!", Toast.LENGTH_SHORT).show();
             txtTT.setText("0");
         }
