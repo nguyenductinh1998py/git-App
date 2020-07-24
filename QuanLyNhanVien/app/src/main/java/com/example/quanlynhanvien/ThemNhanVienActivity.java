@@ -57,51 +57,81 @@ public class ThemNhanVienActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_them_chucvu, menu);
         return super.onCreateOptionsMenu(menu);
     }
+    public void DialogThemCV(){
+        final Dialog dialog2 = new Dialog(this);
+        dialog2.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog2.setContentView(R.layout.them_chuc_vu);
+        final EditText edtNameCV  = (EditText) dialog2.findViewById(R.id.edtNameCV);
+        Button btnEditCV    = (Button) dialog2.findViewById(R.id.btnEditCV);
+        Button btnCancelCV  = (Button) dialog2.findViewById(R.id.btnCancelCV);
+        Button btnXoaNV     = (Button) dialog2.findViewById(R.id.btnDeleteCV);
+        ImageView imgSpiner = (ImageView) dialog2.findViewById(R.id.imageView5);
+        imgSpiner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog dialog1 = new Dialog(ThemNhanVienActivity.this);
+                dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog1.setContentView(R.layout.chon_chucvu);
+                final Spinner spinner = (Spinner) dialog1.findViewById(R.id.spinner3);
+                final ArrayList<String> arrayChucVu = new ArrayList<String>();
+                Cursor cursor = database.GetData("SELECT TenChucVu FROM ChucVu");
+                arrayChucVu.clear();
+                while (cursor.moveToNext()){
+                    arrayChucVu.add(cursor.getString(0));
+                }
+                ArrayAdapter arrayAdapter = new ArrayAdapter(ThemNhanVienActivity.this, R.layout.support_simple_spinner_dropdown_item, arrayChucVu);
+                spinner.setAdapter(arrayAdapter);
+                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        edtNameCV.setText(arrayChucVu.get(position));
 
+                    }
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                    }
+                });
+                dialog1.show();
+            }
+        });
+        btnCancelCV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog2.dismiss();
+            }
+        });
+        btnEditCV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (edtNameCV.getText().toString().trim().equals("")){
+                    Toast.makeText(ThemNhanVienActivity.this, "Không để trống tên chức vụ.", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    database.QueryData("INSERT INTO ChucVu VALUES(null, '"+edtNameCV.getText().toString().trim()+"')");
+                    Toast.makeText(ThemNhanVienActivity.this, "Đã thêm.", Toast.LENGTH_SHORT).show();
+                    dialog2.dismiss();
+                }
+
+            }
+        });
+        btnXoaNV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (edtNameCV.getText().toString().trim().equals("")){
+                    Toast.makeText(ThemNhanVienActivity.this, "Không để trống tên chức vụ.", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    database.QueryData("DELETE FROM ChucVu WHERE TenChucVu = '"+edtNameCV.getText().toString().trim()+"'");
+                    Toast.makeText(ThemNhanVienActivity.this, "Đã Xóa.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        dialog2.show();
+    }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.menuthemchucvu){
-            final Dialog dialog2 = new Dialog(this);
-            dialog2.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog2.setContentView(R.layout.them_chuc_vu);
-            final EditText edtNameCV  = (EditText) dialog2.findViewById(R.id.edtNameCV);
-            Button btnEditCV    = (Button) dialog2.findViewById(R.id.btnEditCV);
-            Button btnCancelCV  = (Button) dialog2.findViewById(R.id.btnCancelCV);
-            Button btnXoaNV     = (Button) dialog2.findViewById(R.id.btnDeleteCV);
-            btnCancelCV.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog2.dismiss();
-                }
-            });
-            btnEditCV.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (edtNameCV.getText().toString().trim().equals("")){
-                        Toast.makeText(ThemNhanVienActivity.this, "Không để trống tên chức vụ.", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        database.QueryData("INSERT INTO ChucVu VALUES(null, '"+edtNameCV.getText().toString().trim()+"')");
-                        Toast.makeText(ThemNhanVienActivity.this, "Đã thêm.", Toast.LENGTH_SHORT).show();
-                        dialog2.dismiss();
-                    }
-
-                }
-            });
-            btnXoaNV.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (edtNameCV.getText().toString().trim().equals("")){
-                        Toast.makeText(ThemNhanVienActivity.this, "Không để trống tên chức vụ.", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        database.QueryData("DELETE FROM ChucVu WHERE TenChucVu = '"+edtNameCV.getText().toString().trim()+"'");
-                        Toast.makeText(ThemNhanVienActivity.this, "Đã Xóa.", Toast.LENGTH_SHORT).show();
-                        dialog2.dismiss();
-                    }
-                }
-            });
-            dialog2.show();
+           DialogThemCV();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -190,6 +220,9 @@ public class ThemNhanVienActivity extends AppCompatActivity {
                 Cursor cursor2 = database.GetData("SELECT COUNT(*) FROM ChucVu WHERE TenChucVu = '"+edtPosition.getText().toString().trim() +"'");
                 cursor2.moveToFirst();
                 kt = cursor2.getInt(0);
+
+
+
                 if(edtName.getText().toString().trim().equals("")) {
                     Toast.makeText(ThemNhanVienActivity.this, "Vui lòng không để trống tên", Toast.LENGTH_SHORT).show();
 

@@ -33,7 +33,12 @@ public class NhanVienAdapter extends BaseAdapter {
         String [] works = a.split(" ");
         if(!TextUtils.isEmpty(s)){
             if(s.length() >= maxLength){
-                a = works[0]+ " " + works[1] + " "+ works[2] + "...";
+                if (works.length >= 3)
+                    a = works[0]+ " " + works[1] + " "+ works[2] + "...";
+                else if (works.length == 2)
+                    a = works[0]+ " " + works[1]  + "...";
+                else if (works.length <= 1)
+                    a = s.substring(0, 9) + "...";
             }
         }
         return a;

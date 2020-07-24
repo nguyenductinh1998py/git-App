@@ -19,14 +19,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
     int REQUEST_CODE_CAMERA = 111;
     int REQUEST_CODE_FOLDER = 222;
     TextView txtTT;
-    EditText edtPosition;
     int kt = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,18 +61,65 @@ public class MainActivity extends AppCompatActivity {
         //database.QueryData("CREATE TABLE IF NOT EXISTS NhanVien(Id INTEGER PRIMARY KEY AUTOINCREMENT, TenNhanVien VARCHAR(150), ChucVu VARCHAR(50), HinhAnh BLOB, Phone INTEGER, MoTa VARCHAR(1000))");
         //database.QueryData("INSERT INTO ChucVu VALUES(null, 'Lãnh Đạo')");
         LoadData();
-        if (nhanVienArrayList.size() >= 1){
-            btnThem.setVisibility(View.INVISIBLE);
-        }
+
         btnThem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, ThemNhanVienActivity.class));
+                Cursor cursor2 = database.GetData("SELECT COUNT(*) FROM ChucVu");
+                cursor2.moveToFirst();
+                kt = cursor2.getInt(0);
+                if (kt == 0){
+                    DialogThemCV();
+                }
+                else
+                    startActivity(new Intent(MainActivity.this, ThemNhanVienActivity.class));
             }
         });
 
     }
+    public void DialogThemCV(){
+        final Dialog dialog2 = new Dialog(this);
+        dialog2.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog2.setContentView(R.layout.them_chuc_vu);
+        final EditText edtNameCV  = (EditText) dialog2.findViewById(R.id.edtNameCV);
+        Button btnEditCV    = (Button) dialog2.findViewById(R.id.btnEditCV);
+        Button btnCancelCV  = (Button) dialog2.findViewById(R.id.btnCancelCV);
+        Button btnXoaNV     = (Button) dialog2.findViewById(R.id.btnDeleteCV);
+        btnCancelCV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog2.dismiss();
+            }
+        });
+        btnEditCV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (edtNameCV.getText().toString().trim().equals("")){
+                    Toast.makeText(MainActivity.this, "Không để trống tên chức vụ.", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    database.QueryData("INSERT INTO ChucVu VALUES(null, '"+edtNameCV.getText().toString().trim()+"')");
+                    Toast.makeText(MainActivity.this, "Đã thêm.", Toast.LENGTH_SHORT).show();
+                    dialog2.dismiss();
+                }
 
+            }
+        });
+        btnXoaNV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (edtNameCV.getText().toString().trim().equals("")){
+                    Toast.makeText(MainActivity.this, "Không để trống tên chức vụ.", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    database.QueryData("DELETE FROM ChucVu WHERE TenChucVu = '"+edtNameCV.getText().toString().trim()+"'");
+                    Toast.makeText(MainActivity.this, "Đã Xóa.", Toast.LENGTH_SHORT).show();
+                    dialog2.dismiss();
+                }
+            }
+        });
+        dialog2.show();
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_them, menu);
@@ -100,7 +143,11 @@ public class MainActivity extends AppCompatActivity {
         }
         else
             txtTT.setText("0");
-
+        if (nhanVienArrayList.size() >= 1){
+            btnThem.setVisibility(View.INVISIBLE);
+        }
+        else
+            btnThem.setVisibility(View.VISIBLE);
 
     }
     private void LoadDataT(String sql){
@@ -186,22 +233,15 @@ public class MainActivity extends AppCompatActivity {
         imgView                     = (ImageView) dialog.findViewById(R.id.imgView);
         ImageButton imgBtnCamera    = (ImageButton) dialog.findViewById(R.id.imgBtnCamera);
         ImageButton imgBtnFolder    = (ImageButton) dialog.findViewById(R.id.imgBtnFolder);
-        ImageButton imgBtnList      = (ImageButton) dialog.findViewById(R.id.imgButtonlist);
         final EditText edtName      = (EditText) dialog.findViewById(R.id.editName);
-        edtPosition = (EditText) dialog.findViewById(R.id.edtPosition);
+        final EditText edtPosition  = (EditText) dialog.findViewById(R.id.edtPosition);
         final EditText edtPhone     = (EditText) dialog.findViewById(R.id.edtPhone);
         final EditText edtMota      = (EditText) dialog.findViewById(R.id.edtMoTa);
-
         edtName.setText(ten);
         edtPhone.setText(sdt+ "");
         edtPosition.setText(chucVu);
         edtMota.setText(moTa);
-        imgBtnList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialodSpiner();
-            }
-        });
+
         imgBtnCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -244,8 +284,10 @@ public class MainActivity extends AppCompatActivity {
                     MainActivity.database.UPDATE_NHANVIEN(edtName.getText().toString().trim(), edtPosition.getText().toString().trim(), hinhAnh, Integer.parseInt(edtPhone.getText().toString().trim()), id, edtMota.getText().toString().trim());
                     Toast.makeText(MainActivity.this, "Đã Sửa", Toast.LENGTH_SHORT).show();
                     LoadData();
-                    dialog.dismiss();
                 }
+
+
+
             }
         });
 
@@ -259,31 +301,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         dialog.show();
-    }
-    private void dialodSpiner() {
-        final Dialog dialog1 = new Dialog(this);
-        dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog1.setContentView(R.layout.chon_chucvu);
-        final Spinner spinner = (Spinner) dialog1.findViewById(R.id.spinner3);
-        final ArrayList<String> arrayChucVu = new ArrayList<String>();
-        Cursor cursor = database.GetData("SELECT TenChucVu FROM ChucVu");
-        arrayChucVu.clear();
-        while (cursor.moveToNext()){
-            arrayChucVu.add(cursor.getString(0));
-        }
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, arrayChucVu);
-        spinner.setAdapter(arrayAdapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                edtPosition.setText(arrayChucVu.get(position));
-
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-        dialog1.show();
     }
 
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -310,6 +327,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.menuAdd){
+            Cursor cursor2 = database.GetData("SELECT COUNT(*) FROM ChucVu");
+            cursor2.moveToFirst();
+            kt = cursor2.getInt(0);
+            if (kt == 0){
+                DialogThemCV();
+            }
+            else
             startActivity(new Intent(MainActivity.this, ThemNhanVienActivity.class));
         }
         if (item.getItemId() == R.id.menuT){
