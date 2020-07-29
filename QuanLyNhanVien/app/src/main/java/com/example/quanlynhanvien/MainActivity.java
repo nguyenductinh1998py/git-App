@@ -57,8 +57,8 @@ public class MainActivity extends AppCompatActivity {
 
         database = new Database(this, "QuanLyNhanVien.sqlite", null, 1);
         //database.QueryData("DROP TABLE NhanVien");
-        //database.QueryData("CREATE TABLE IF NOT EXISTS ChucVu(Id INTEGER PRIMARY KEY AUTOINCREMENT, TenChucVu VARCHAR(50))");
-        //database.QueryData("CREATE TABLE IF NOT EXISTS NhanVien(Id INTEGER PRIMARY KEY AUTOINCREMENT, TenNhanVien VARCHAR(150), ChucVu VARCHAR(50), HinhAnh BLOB, Phone INTEGER, MoTa VARCHAR(1000))");
+        database.QueryData("CREATE TABLE IF NOT EXISTS ChucVu(Id INTEGER PRIMARY KEY AUTOINCREMENT, TenChucVu VARCHAR(50))");
+        database.QueryData("CREATE TABLE IF NOT EXISTS NhanVien(Id INTEGER PRIMARY KEY AUTOINCREMENT, TenNhanVien VARCHAR(150), ChucVu VARCHAR(50), HinhAnh BLOB, Phone INTEGER, MoTa VARCHAR(1000))");
         //database.QueryData("INSERT INTO ChucVu VALUES(null, 'Lãnh Đạo')");
         LoadData();
 
